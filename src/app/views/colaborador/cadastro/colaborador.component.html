@@ -55,76 +55,48 @@
           <div class="input-group-prepend">
             <div class="input-group-text"><i class="fas fa-phone-square-alt"></i></div>
           </div>
-          <input type="text" class="form-control" id="contato" placeholder="" formControlName="contato">
+          <input type="text" class="form-control" id="contato" placeholder="" formControlName="telefone">
         </div>
 
         <p-message severity="error" text="Campo Contato é Obrigatório"
-          *ngIf="!formGroup.controls['contato'].valid&&formGroup.controls['contato'].dirty">
+          *ngIf="!formGroup.controls['telefone'].valid&&formGroup.controls['telefone'].dirty">
         </p-message>
-      </div>
-
-      <div class="form-group col-md-4">
-        <label>Senha de Acesso</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <div class="input-group-text"><i class="fas fa-key"></i></div>
-          </div>
-          <input type="text" class="form-control" id="senha" placeholder="" formControlName="senha">
-        </div>
-        <p-message severity="error" text="Campo Senha é Obrigatório"
-          *ngIf="!formGroup.controls['senha'].valid&&formGroup.controls['senha'].dirty">
-        </p-message>
-      </div>
+      </div>   
     </div>
 
+ 
 
     <div class="form-row">
       <div class="form-group col-md-6">
-        <label>Cargo</label>
+        <label>Departamento</label>
         <div class="input-group">
-          <div class="input-group-prepend">
-            <div class="input-group-text"> <i class="fas fa-receipt"></i></div>
-          </div>
-          <p-autoComplete formControlName="cargo" 
-            [suggestions]="cargos" 
-            (completeMethod)="getCargos($event)"
-            field="nome" emptyMessage="Nenhum Registro Encontrado">
-          </p-autoComplete>
+          <select  #setor class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+            <option selected>Setor...</option>
+            <option  *ngFor="let setor of setores"  value="setor.id">
+              {{setor.descricao}}
+            </option>            
+          </select>         
         </div>
-        <p-message severity="error" text="Campo Cargo é Obrigatório"
-          *ngIf="!formGroup.controls['cargo'].valid&&formGroup.controls['cargo'].dirty">
+        <p-message severity="error" text="Informe um Departamento para continuar com a operação"
+          *ngIf="!formGroup.controls['setor'].valid&&formGroup.controls['setor'].dirty">
         </p-message>
       </div>
 
-      <div class="form-group col-md-6">
-        <label>Empresa</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <div class="input-group-text"> <i class="fas fa-receipt"></i></div>
-          </div>
-          <p-autoComplete formControlName="empresa" [suggestions]="empresas" (completeMethod)="getEmpresas($event)"
-          field="nome" emptyMessage="Nenhum Registro Encontrado">
-        </p-autoComplete>
-        </div>
-        <p-message severity="error" text="Campo Empresa é Obrigatório"
-        *ngIf="!formGroup.controls['empresa'].valid&&formGroup.controls['empresa'].dirty">
-      </p-message>
-      </div>
+  
 
     </div>
-
 
     <hr />
     <p-toolbar>
       <div class="ui-toolbar-group-left">
-        <button pButton type="submit" label="Salvar" icon="pi pi-save" class="ui-button-success"
-          style="margin-right: 5px" [disabled]="!formGroup.valid">
+        <button  type="submit" class="btn btn-primary"
+          style="margin-right: 5px" [disabled]="!formGroup.valid">Salvar
         </button>
 
       </div>
 
       <div class="ui-toolbar-group-right">
-        <button pButton type="button" icon="pi pi-search" class="ui-button-warning" [routerLink]="['/usuario/lista']">
+        <button  type="button"  class="btn btn-warning"  [routerLink]="['/usuario/lista']"> Listar
         </button>
       </div>
 

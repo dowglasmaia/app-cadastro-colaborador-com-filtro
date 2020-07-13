@@ -1,9 +1,11 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Colaborador } from '../shared/colaborador';
 import { ColaboradorService } from '../shared/colaborador.service';
+import { Setor } from '../../setor/shared/setor';
+import { SetorService } from '../../setor/shared/setor.service';
 
 
 @Component({
@@ -21,42 +23,37 @@ export class ColaboradorComponent implements OnInit {
   colaborador: Colaborador;
   colaboradorSelecionado: Colaborador;
   botoesDesabilitado: boolean = true;
- 
+
+
+  setores: Setor[] = [];
+
+  setorSelecionado: number;
+
+  //pegando o valor da variavel declarada no templet HTML, com ViewChild
+  @ViewChild('setor') setor: ElementRef = null;
+
 
   constructor(
     private colaboradorService: ColaboradorService,
-    private frmBuilder: FormBuilder,   
+    private frmBuilder: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
-    private location: Location
+    private setorService: SetorService
   ) { }
 
   ngOnInit() {
     this.colaborador = new Colaborador();
-    
+
     this.formGroup = this.frmBuilder.group({
-      'codigo': [null],
+      'id': [null],
       'nome': ['', [Validators.required]],
-      'email': ['', [Validators.required]],
       'cpf': ['', [Validators.required]],
-      'senha': ['', [Validators.required]],
-      'contato': ['', [Validators.required]],
-      'cargo': ['', [Validators.required]],
-      'empresa': ['', [Validators.required]]
+      'email': ['', [Validators.required]],
+      'telefone': ['', [Validators.required]],
+      'setor': ['', [Validators.required]],
     });
-   
 
-     if (this.router.url !== '/colaborador/novo') {   
-      let codigo = this.route.snapshot.paramMap.get('codigo');
-      this.colaboradorService.getById(parseInt(codigo, 0)).subscribe(obj => {
-        this.colaborador = obj;
+    this.getSetores();
 
-        this.edicao = true;
-        this.novo = false;       
-
-        this.formGroup.patchValue(this.colaborador);
-      }, error => { });
-    }
   }
 
 
@@ -65,7 +62,6 @@ export class ColaboradorComponent implements OnInit {
     if (this.colaborador.id == null) {
       this.salvar();
     }
-
   }
 
   salvar() {
@@ -75,14 +71,13 @@ export class ColaboradorComponent implements OnInit {
       this.router.navigate(['/colaborador/lista']);
     }, error => { });
   }
-  
 
-  onRowSelect(event) {
-    this.botoesDesabilitado = false;
+  public getSetores() {
+    this.setorService.getAll().subscribe(lista => {
+      this.setores = lista;
+      console.log(this.setores)
+    }, error => { });
   }
 
-  onRowUnselect(event) {
-    this.botoesDesabilitado = true;
-  }
 
 }

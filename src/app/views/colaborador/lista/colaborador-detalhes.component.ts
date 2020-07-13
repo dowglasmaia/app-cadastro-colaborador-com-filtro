@@ -29,16 +29,12 @@ export class ColaboradorDetalhesComponent implements OnInit {
   constructor(
     private colaboradorServices: ColaboradorService,
     private confirmationService: ConfirmationService,
-    private location: Location,
     private global: UteisShared,
     private setorService: SetorService) { }
 
   ngOnInit() {
 
-    console.log(this.colaboradores)
-
-    this.colaborador = new Colaborador();
-    //this.setor = new Setor();
+    this.colaborador = new Colaborador();  
 
     this.cols = [
       { field: 'id', header: 'Código' },
@@ -47,7 +43,6 @@ export class ColaboradorDetalhesComponent implements OnInit {
       { field: 'email', header: 'e-Mail' },
       { field: 'dataNascimento', header: 'Data de Nascimento' },
       { field: 'setor.descricao', header: 'Setor' },
-
     ];
 
     this.getSetores();
